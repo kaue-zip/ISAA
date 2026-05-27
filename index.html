@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Isa 💜</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -19,6 +19,7 @@ body{
     min-height:100svh;
     overflow-x:hidden;
     overflow-y:auto;
+    touch-action:manipulation;
     font-family:'Poppins',sans-serif;
     background:
     radial-gradient(circle at top, rgba(255,215,64,0.15), transparent 30%),
@@ -106,16 +107,14 @@ h1{
 .pascal{
     width:82px;
     cursor:pointer;
-    animation:flutuar 3s ease-in-out infinite;
+    animation:flutuarPascal 3s ease-in-out infinite;
+    user-select:none;
+    -webkit-user-drag:none;
+    filter:drop-shadow(0 0 12px rgba(0,0,0,.35));
 }
 
-@keyframes flutuar{
-    0%,100%{
-        transform:translateY(0);
-    }
-    50%{
-        transform:translateY(-8px);
-    }
+.pascal:hover{
+    filter:drop-shadow(0 0 18px rgba(255,215,64,.75));
 }
 
 .pascal-fala{
@@ -126,11 +125,63 @@ h1{
     width:150px;
     padding:8px 10px;
     border-radius:14px;
-    background:rgba(255,255,255,.15);
+    background:rgba(255,255,255,.17);
     backdrop-filter:blur(10px);
-    border:1px solid rgba(255,255,255,.2);
+    border:1px solid rgba(255,255,255,.25);
     font-size:11px;
     display:none;
+    z-index:50;
+}
+
+.pascal-andando{
+    position:fixed;
+    z-index:99998;
+    width:78px;
+    right:18px;
+    bottom:88px;
+    cursor:pointer;
+    user-select:none;
+    -webkit-user-drag:none;
+    animation:pascalRespira 2.8s ease-in-out infinite;
+    filter:drop-shadow(0 0 14px rgba(0,0,0,.45));
+    transition:transform .35s ease, left .8s ease, top .8s ease, right .8s ease, bottom .8s ease;
+}
+
+.pascal-andando.escondido{
+    transform:translateX(45px) rotate(-8deg);
+}
+
+.pascal-andando.dormindo{
+    opacity:.88;
+    transform:rotate(-5deg) scale(.95);
+}
+
+.pascal-balao{
+    position:fixed;
+    z-index:99999;
+    right:74px;
+    bottom:160px;
+    width:160px;
+    padding:10px 12px;
+    border-radius:16px;
+    background:rgba(255,255,255,.17);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.25);
+    color:white;
+    text-align:center;
+    font-size:12px;
+    display:none;
+    box-shadow:0 0 18px rgba(255,215,64,.25);
+}
+
+@keyframes flutuarPascal{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-8px); }
+}
+
+@keyframes pascalRespira{
+    0%,100%{ transform:translateY(0) rotate(0deg); }
+    50%{ transform:translateY(-7px) rotate(2deg); }
 }
 
 .sub{
@@ -185,10 +236,7 @@ button{
     bottom:-100px;
     font-size:22px;
     animation:subir linear forwards;
-    opacity:.95;
-    z-index:99999;
-    pointer-events:none;
-    filter:drop-shadow(0 0 12px rgba(255,215,64,.8));
+    opacity:.85;
 }
 
 @keyframes subir{
@@ -213,6 +261,93 @@ button{
     color:#4a148c;
     font-weight:700;
     box-shadow:0 0 20px rgba(255,215,64,.5);
+}
+
+
+@media (max-width:600px){
+    body{
+        padding:14px 10px 95px;
+        justify-content:center;
+        align-items:flex-start;
+    }
+
+    .card{
+        max-width:390px;
+        min-height:auto;
+        padding:24px 18px;
+        border-radius:28px;
+    }
+
+    .foto{
+        width:125px;
+        height:125px;
+    }
+
+    h1{
+        font-size:48px;
+    }
+
+    .sub,
+    .texto{
+        font-size:14px;
+    }
+
+    .linha{
+        margin:18px auto;
+    }
+
+    button{
+        min-height:48px;
+    }
+
+    .video-btn{
+        left:50%;
+        transform:translateX(-50%);
+        bottom:10px;
+        font-size:13px;
+        padding:11px 16px;
+        white-space:nowrap;
+    }
+
+    .pascal{
+        width:72px;
+    }
+
+    .pascal-andando{
+        width:68px;
+        bottom:70px;
+        right:10px;
+    }
+
+    .pascal-balao{
+        right:58px;
+        bottom:132px;
+        width:145px;
+        font-size:11px;
+    }
+
+    .lanterna{
+        z-index:99999;
+        pointer-events:none;
+    }
+}
+
+@media (max-width:360px){
+    .card{
+        padding:22px 15px;
+    }
+
+    h1{
+        font-size:42px;
+    }
+
+    .pascal{
+        width:62px;
+    }
+
+    .pascal-andando{
+        width:58px;
+    }
 }
 
 </style>
@@ -342,12 +477,22 @@ window.addEventListener("DOMContentLoaded",()=>{
 
     const pascal = document.getElementById("pascal");
     const fala = document.getElementById("falaPascal");
+    const pascalAndando = document.getElementById("pascalAndando");
+    const balaoAndando = document.getElementById("balaoPascalAndando");
 
     const frases = [
         "Rapunzel aprova 💜",
         "Esse reino ficou lindo ✨",
         "Pascal amou esse site 🏮",
         "Modo Disney ativado 👑"
+    ];
+
+    const frasesAndando = [
+        "Me achou! 💜",
+        "Vou passear pelo reino 🏮",
+        "Cliquei e mudei de lugar ✨",
+        "Estou protegendo a Isa 👑",
+        "Esse site ficou mágico!"
     ];
 
     pascal.addEventListener("click",()=>{
@@ -363,9 +508,65 @@ window.addEventListener("DOMContentLoaded",()=>{
 
     });
 
+    function moverPascal(){
+        const largura = window.innerWidth;
+        const altura = window.innerHeight;
+
+        const maxX = Math.max(10, largura - 95);
+        const maxY = Math.max(80, altura - 180);
+
+        const x = Math.floor(Math.random() * maxX);
+        const y = Math.floor(90 + Math.random() * (maxY - 80));
+
+        pascalAndando.style.left = x + "px";
+        pascalAndando.style.top = y + "px";
+        pascalAndando.style.right = "auto";
+        pascalAndando.style.bottom = "auto";
+
+        balaoAndando.style.left = Math.min(x + 20, largura - 170) + "px";
+        balaoAndando.style.top = Math.max(20, y - 58) + "px";
+        balaoAndando.style.right = "auto";
+        balaoAndando.style.bottom = "auto";
+    }
+
+    function falarPascal(){
+        balaoAndando.innerHTML =
+        frasesAndando[Math.floor(Math.random()*frasesAndando.length)];
+
+        balaoAndando.style.display = "block";
+
+        setTimeout(()=>{
+            balaoAndando.style.display = "none";
+        },2500);
+    }
+
+    pascalAndando.addEventListener("click",()=>{
+        falarPascal();
+        moverPascal();
+    });
+
+    setInterval(()=>{
+        moverPascal();
+    },6500);
+
+    setInterval(()=>{
+        pascalAndando.classList.toggle("escondido");
+    },4300);
+
 });
 
 </script>
+
+
+<div class="pascal-balao" id="balaoPascalAndando">
+    Me achou! 💜
+</div>
+
+<img
+class="pascal-andando"
+id="pascalAndando"
+src="https://raw.githubusercontent.com/kaue-zip/imagem/refs/heads/main/ChatGPT%20Image%2027%20de%20mai.%20de%202026%2C%2011_14_03.png"
+alt="Pascal andando">
 
 </body>
 </html>
